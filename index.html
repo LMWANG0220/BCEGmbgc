@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>施工工艺样板展示</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body {
+    min-height:100%; background:#14181c; color:#fff;
+    font-family:-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    overscroll-behavior:none;
+  }
+  body { padding:0 0 calc(env(safe-area-inset-bottom) + 34px); }
+
+  header {
+    text-align:center;
+    padding:calc(env(safe-area-inset-top) + 32px) 20px 24px;
+  }
+  header .t { font-size:23px; font-weight:600; letter-spacing:1px; }
+  header .s { font-size:13px; color:#9aa5b1; margin-top:9px; }
+  header .n {
+    display:inline-block; margin-top:15px; padding:5px 14px;
+    border-radius:20px; background:rgba(77,163,255,.14); color:#7cbcff;
+    font-size:12px;
+  }
+
+  .wrap { max-width:760px; margin:0 auto; padding:0 16px; }
+  .list { display:flex; flex-direction:column; gap:12px; }
+
+  .item {
+    display:flex; align-items:center; gap:14px;
+    background:#1e242a; border-radius:14px; padding:13px 14px;
+    text-decoration:none; color:#fff;
+    border:1px solid rgba(255,255,255,.05);
+    transition:.18s;
+  }
+  .item:hover { background:#252d35; border-color:rgba(77,163,255,.35); }
+  .item:active { transform:scale(.985); }
+
+  .item .cover {
+    flex:0 0 88px; width:88px; height:88px; border-radius:10px;
+    object-fit:cover; background:#2b323a; display:block;
+  }
+  .item .cover.ph {
+    display:flex; align-items:center; justify-content:center;
+    color:#6b7480; font-size:11px; text-align:center; line-height:1.4;
+  }
+  .item .info { flex:1 1 auto; min-width:0; }
+  .item .no { font-size:11px; color:#5d8fc4; letter-spacing:1px; margin-bottom:5px; }
+  .item .nm { font-size:16px; font-weight:600; line-height:1.45; word-break:break-all; }
+  .item .sb {
+    font-size:12px; color:#8b939c; margin-top:5px;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .item .go { font-size:12px; color:#4da3ff; margin-top:9px; }
+  .item .arw { flex:0 0 auto; font-size:26px; color:#5d6771; margin-left:2px; }
+
+  .foot {
+    text-align:center; font-size:11px; color:#5d6771;
+    margin-top:28px; line-height:1.7; padding:0 20px;
+  }
+
+  @media (min-width:721px) {
+    .list { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  }
+</style>
+</head>
+<body>
+
+<header id="hd"></header>
+<div class="wrap">
+  <div class="list" id="list"></div>
+  <div class="foot" id="foot"></div>
+</div>
+
+<script src="sites.js"></script>
+<script>
+(function () {
+  var S = window.SITES || [];
+  var T = window.DIR_TITLE || '施工工艺样板展示';
+  var B = window.DIR_SUB || '';
+  var U = window.DIR_UNIT || '板块';
+  var F = window.DIR_FOOT || '';
+
+  document.title = T;
+  document.getElementById('hd').innerHTML =
+      '<div class="t">' + T + '</div>'
+    + (B ? '<div class="s">' + B + '</div>' : '')
+    + '<div class="n">共 ' + S.length + ' 个' + U + '</div>';
+
+  var list = document.getElementById('list');
+  if (!S.length) {
+    list.innerHTML = '<div class="item"><div class="info"><div class="nm">还没有配置板块</div>'
+                   + '<div class="sb">打开 sites.js 添加</div></div></div>';
+  } else {
+    var h = '';
+    S.forEach(function (it, i) {
+      var no = ('0' + (i + 1)).slice(-2);
+      h += '<a class="item" href="' + (it.url || '#') + '">'
+         + (it.cover
+              ? '<img class="cover" src="' + it.cover + '" alt="">'
+              : '<div class="cover ph">效果图</div>')
+         + '<div class="info">'
+         + '<div class="no">' + U + ' ' + no + '</div>'
+         + '<div class="nm">' + (it.name || '未命名') + '</div>'
+         + (it.sub ? '<div class="sb">' + it.sub + '</div>' : '')
+         + '<div class="go">查看效果图与资料 ›</div>'
+         + '</div>'
+         + '<div class="arw">›</div>'
+         + '</a>';
+    });
+    list.innerHTML = h;
+
+    var imgs = list.querySelectorAll('img.cover');
+    for (var k = 0; k < imgs.length; k++) {
+      imgs[k].onerror = function () {
+        var d = document.createElement('div');
+        d.className = 'cover ph'; d.textContent = '效果图';
+        if (this.parentNode) this.parentNode.replaceChild(d, this);
+      };
+    }
+  }
+
+  document.getElementById('foot').textContent = F;
+})();
+</script>
+</body>
+</html>
