@@ -41,3 +41,23 @@ window.CARDS = [
     btn: '直接打开'
   }
 ];
+
+/* 返回主菜单按钮：整段粘贴到 config.js 最末尾，前面内容一个字都不用动 */
+(function () {
+  if (document.getElementById('backBtn')) return;
+  var s = document.createElement('style');
+  s.textContent =
+    '#backBtn{position:fixed;z-index:10;left:14px;bottom:calc(env(safe-area-inset-bottom) + 16px);' +
+    'display:inline-flex;align-items:center;padding:9px 14px;border-radius:22px;' +
+    'background:rgba(0,0,0,.42);color:#fff;font-size:13px;line-height:1;' +
+    'text-decoration:none;border:1px solid rgba(255,255,255,.16);' +
+    'box-shadow:0 2px 10px rgba(0,0,0,.3);font-family:inherit}' +
+    '#backBtn:active{transform:scale(.94)}';
+  document.head.appendChild(s);
+  var a = document.createElement('a');
+  a.id = 'backBtn';
+  a.href = '../index.html';
+  a.textContent = '‹ 返回主菜单';
+  a.setAttribute('aria-label', '返回主菜单');
+  document.body.appendChild(a);
+})();
